@@ -1,7 +1,6 @@
 const router = require("express").Router();
- 
-const { appendFile } = require("fs");
 const path = require("path");
+const fs = require("fs");
 
 // GET Route
 router.get("/", (req, res) =>

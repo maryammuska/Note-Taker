@@ -1,10 +1,7 @@
 // Dependencies 
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
-
-const html = require("./routes/htmlRoutes");
-const api = require("./routes/apiRoutes"); 
+const apiRoutes = require("./routes/apiRoutes");
+const htmlRoutes = require("./routes/htmlRoutes");
 
 // Use Express
 const app = express();
@@ -19,7 +16,7 @@ app.use(express.static("./public"));
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
-app.use("/api", api);
+app.use("/api", apiRoutes);
 app.use("/", html);
 
 // app listener 
