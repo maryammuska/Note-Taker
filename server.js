@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
 app.use("/api", apiRoutes);
-app.use("/", html);
+app.use("/", htmlRoutes);
 
 // app listener 
 

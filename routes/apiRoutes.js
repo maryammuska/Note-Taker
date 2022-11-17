@@ -1,37 +1,29 @@
 const router = require("express").Router();
-const path = require("path");
+const uuid = require("uuid");
 const fs = require("fs");
-const uniqid = require("uniqid");
 
 // GET Route
 
-router.get("/", (req, res) =>
-    res.sendFile(path.join(__dirname,"../public/notes.html"))
-);
+router.get("/notes", (req, res) => {
+    let data = fs.readFileSync("./db/db.json");
+    res.json(JSON.parse(data));
+})
 
-router.get("/api/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "../db/db.json"));
+router.post("/notes", (req, res) => {
+    let db = JSON.parse(fs.readFileSync("./db/db.json"));
+    let addDb = req.body;
+    addDb.id =uuid.v4();
+    db.push(addDb);
+    fs.writeFileSync("./db/db.json", JSON.stringify(db));
+    res.json(notes);
 });
 
-router.post("/api/notes", (req, res) => {
-    let db = fs.readFileSync('db/db.json');
-    db = json.parse(db);
-    res.json(db);
+router.delete("/notes/:id", (req, res) => {
+    let db = JSON.parse(fs.readFileSync("db/db.json"));
+    let deleteDb = db.filter((item) => item.id !== req.params.id);
+    fs.writeFileSync("./db/db.json", JSON.stringify(deleteDb));
 
-    let userNote = {
-        title: req.body.title,
-        text: req.body.text,
-        id: uniqid(),
-    };
-
-    db.push(userNote);
-    fs.writeFuleSync("db/db.json", JSON.stringify(db));
+    res.json(deleteDb);
 });
 
-router.delete("/api/notes/", (req, res) => {
-    let db = JSON.parse(fs.readFileSync("db/db.json"))
-    let deleteNotes = db.filter(item => item.id !== req.params.id);
-    res.json(deleteNotes);
-});
-
-modeule.exports = router;
+module.exports = router;
